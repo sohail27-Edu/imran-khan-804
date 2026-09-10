@@ -27,7 +27,7 @@ body {
   inset: -22px;
   z-index: -3;
   background:
-    url("images/imran-khan.png") center center / cover no-repeat;
+    url("imran-khan.png") center center / cover no-repeat;
   filter: blur(3px);
   transform: scale(1.04);
 }
