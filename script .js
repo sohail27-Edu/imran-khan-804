@@ -1,130 +1,165 @@
-"use strict";
+document.addEventListener("DOMContentLoaded", function () {
 
-const START = new Date("2023-08-05T12:59:00+05:00");
+  const START = new Date("2023-08-05T12:59:00+05:00");
 
-
-function updateCounter() {
-
-  const now = new Date();
-
-  let years = now.getFullYear() - START.getFullYear();
-  let months = now.getMonth() - START.getMonth();
-  let days = now.getDate() - START.getDate();
-
-  let hours = now.getHours() - START.getHours();
-  let minutes = now.getMinutes() - START.getMinutes();
-  let seconds = now.getSeconds() - START.getSeconds();
-  let milliseconds =
-    now.getMilliseconds() - START.getMilliseconds();
+  const yearsEl = document.getElementById("years");
+  const monthsEl = document.getElementById("months");
+  const daysEl = document.getElementById("days");
+  const hoursEl = document.getElementById("hours");
+  const minutesEl = document.getElementById("minutes");
+  const secondsEl = document.getElementById("seconds");
+  const millisecondsEl = document.getElementById("milliseconds");
+  const totalDaysEl = document.getElementById("totalDays");
 
 
-  /*
-   * Normalize milliseconds
-   */
-  if (milliseconds < 0) {
-    milliseconds += 1000;
-    seconds--;
+  function updateCounter() {
+
+    const now = new Date();
+
+    let years = now.getFullYear() - START.getFullYear();
+    let months = now.getMonth() - START.getMonth();
+    let days = now.getDate() - START.getDate();
+
+    let hours = now.getHours() - START.getHours();
+    let minutes = now.getMinutes() - START.getMinutes();
+    let seconds = now.getSeconds() - START.getSeconds();
+    let milliseconds =
+      now.getMilliseconds() - START.getMilliseconds();
+
+
+    // Milliseconds
+    if (milliseconds < 0) {
+      milliseconds += 1000;
+      seconds--;
+    }
+
+
+    // Seconds
+    if (seconds < 0) {
+      seconds += 60;
+      minutes--;
+    }
+
+
+    // Minutes
+    if (minutes < 0) {
+      minutes += 60;
+      hours--;
+    }
+
+
+    // Hours
+    if (hours < 0) {
+      hours += 24;
+      days--;
+    }
+
+
+    // Days
+    if (days < 0) {
+      months--;
+
+      const previousMonth = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        0
+      );
+
+      days += previousMonth.getDate();
+    }
+
+
+    // Months
+    if (months < 0) {
+      months += 12;
+      years--;
+    }
+
+
+    // Total days
+    const totalDays = Math.floor(
+      (now.getTime() - START.getTime()) /
+      86400000
+    );
+
+
+    // Update display
+    yearsEl.textContent = years;
+
+    monthsEl.textContent =
+      String(months).padStart(2, "0");
+
+    daysEl.textContent =
+      String(days).padStart(2, "0");
+
+    hoursEl.textContent =
+      String(hours).padStart(2, "0");
+
+    minutesEl.textContent =
+      String(minutes).padStart(2, "0");
+
+    secondsEl.textContent =
+      String(seconds).padStart(2, "0");
+
+    millisecondsEl.textContent =
+      String(milliseconds).padStart(3, "0");
+
+    totalDaysEl.textContent =
+      totalDays.toLocaleString();
   }
 
 
-  /*
-   * Normalize seconds
-   */
-  if (seconds < 0) {
-    seconds += 60;
-    minutes--;
-  }
+  // Start counter immediately
+  updateCounter();
 
+  // Update every 50 milliseconds
+  setInterval(updateCounter, 50);
 
-  /*
-   * Normalize minutes
-   */
-  if (minutes < 0) {
-    minutes += 60;
-    hours--;
-  }
 
 
   /*
-   * Normalize hours
+   * LOVE & SUPPORT BUTTON
    */
-  if (hours < 0) {
-    hours += 24;
-    days--;
-  }
+
+  const loveButton = document.getElementById("loveButton");
+  const loveCount = document.getElementById("loveCount");
+  const heartBurst = document.getElementById("heartBurst");
+
+  let count = Number(localStorage.getItem("loveCount")) || 0;
+
+  loveCount.textContent = count.toLocaleString();
 
 
-  /*
-   * Normalize days
-   */
-  if (days < 0) {
+  loveButton.addEventListener("click", function () {
 
-    months--;
+    count++;
 
-    const daysInPreviousMonth = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      0
-    ).getDate();
+    loveCount.textContent =
+      count.toLocaleString();
 
-    days += daysInPreviousMonth;
-  }
+    localStorage.setItem("loveCount", count);
 
 
-  /*
-   * Normalize months
-   */
-  if (months < 0) {
-    months += 12;
-    years--;
-  }
+    // Create floating heart
+    const heart = document.createElement("span");
+
+    heart.className = "floating-heart";
+    heart.textContent = "♥";
+
+    heart.style.left =
+      (45 + Math.random() * 10) + "%";
+
+    heart.style.bottom =
+      (12 + Math.random() * 8) + "%";
+
+    heartBurst.appendChild(heart);
 
 
-  /*
-   * Total elapsed days
-   */
-  const totalDays = Math.floor(
-    (now.getTime() - START.getTime()) /
-    (1000 * 60 * 60 * 24)
-  );
+    // Remove after animation
+    setTimeout(function () {
+      heart.remove();
+    }, 1500);
 
+  });
 
-  /*
-   * Update HTML
-   */
-  document.getElementById("years").textContent =
-    years;
-
-  document.getElementById("months").textContent =
-    String(months).padStart(2, "0");
-
-  document.getElementById("days").textContent =
-    String(days).padStart(2, "0");
-
-  document.getElementById("hours").textContent =
-    String(hours).padStart(2, "0");
-
-  document.getElementById("minutes").textContent =
-    String(minutes).padStart(2, "0");
-
-  document.getElementById("seconds").textContent =
-    String(seconds).padStart(2, "0");
-
-  document.getElementById("milliseconds").textContent =
-    String(milliseconds).padStart(3, "0");
-
-  document.getElementById("totalDays").textContent =
-    totalDays.toLocaleString();
-}
-
-
-/*
- * Run immediately
- */
-updateCounter();
-
-
-/*
- * Update 20 times per second
- */
-setInterval(updateCounter, 50);
+});
