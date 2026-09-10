@@ -1,54 +1,130 @@
+"use strict";
+
 const START = new Date("2023-08-05T12:59:00+05:00");
 
+
 function updateCounter() {
+
   const now = new Date();
 
-  // Total elapsed milliseconds
-  let difference = now.getTime() - START.getTime();
+  let years = now.getFullYear() - START.getFullYear();
+  let months = now.getMonth() - START.getMonth();
+  let days = now.getDate() - START.getDate();
 
-  // Years
-  const years = Math.floor(difference / (365.2425 * 24 * 60 * 60 * 1000));
-  difference -= years * 365.2425 * 24 * 60 * 60 * 1000;
+  let hours = now.getHours() - START.getHours();
+  let minutes = now.getMinutes() - START.getMinutes();
+  let seconds = now.getSeconds() - START.getSeconds();
+  let milliseconds =
+    now.getMilliseconds() - START.getMilliseconds();
 
-  // Months
-  const months = Math.floor(difference / (30.436875 * 24 * 60 * 60 * 1000));
-  difference -= months * 30.436875 * 24 * 60 * 60 * 1000;
 
-  // Days
-  const days = Math.floor(difference / (24 * 60 * 60 * 1000));
-  difference -= days * 24 * 60 * 60 * 1000;
+  /*
+   * Normalize milliseconds
+   */
+  if (milliseconds < 0) {
+    milliseconds += 1000;
+    seconds--;
+  }
 
-  // Hours
-  const hours = Math.floor(difference / (60 * 60 * 1000));
-  difference -= hours * 60 * 60 * 1000;
 
-  // Minutes
-  const minutes = Math.floor(difference / (60 * 1000));
-  difference -= minutes * 60 * 1000;
+  /*
+   * Normalize seconds
+   */
+  if (seconds < 0) {
+    seconds += 60;
+    minutes--;
+  }
 
-  // Seconds
-  const seconds = Math.floor(difference / 1000);
-  const milliseconds = difference % 1000;
 
-  // Display
-  document.getElementById("years").textContent = years;
-  document.getElementById("months").textContent = String(months).padStart(2, "0");
-  document.getElementById("days").textContent = String(days).padStart(2, "0");
-  document.getElementById("hours").textContent = String(hours).padStart(2, "0");
-  document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
-  document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
-  document.getElementById("milliseconds").textContent = String(milliseconds).padStart(3, "0");
+  /*
+   * Normalize minutes
+   */
+  if (minutes < 0) {
+    minutes += 60;
+    hours--;
+  }
 
-  // Total days since 5 August 2023
+
+  /*
+   * Normalize hours
+   */
+  if (hours < 0) {
+    hours += 24;
+    days--;
+  }
+
+
+  /*
+   * Normalize days
+   */
+  if (days < 0) {
+
+    months--;
+
+    const daysInPreviousMonth = new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      0
+    ).getDate();
+
+    days += daysInPreviousMonth;
+  }
+
+
+  /*
+   * Normalize months
+   */
+  if (months < 0) {
+    months += 12;
+    years--;
+  }
+
+
+  /*
+   * Total elapsed days
+   */
   const totalDays = Math.floor(
-    (now.getTime() - START.getTime()) / (24 * 60 * 60 * 1000)
+    (now.getTime() - START.getTime()) /
+    (1000 * 60 * 60 * 24)
   );
+
+
+  /*
+   * Update HTML
+   */
+  document.getElementById("years").textContent =
+    years;
+
+  document.getElementById("months").textContent =
+    String(months).padStart(2, "0");
+
+  document.getElementById("days").textContent =
+    String(days).padStart(2, "0");
+
+  document.getElementById("hours").textContent =
+    String(hours).padStart(2, "0");
+
+  document.getElementById("minutes").textContent =
+    String(minutes).padStart(2, "0");
+
+  document.getElementById("seconds").textContent =
+    String(seconds).padStart(2, "0");
+
+  document.getElementById("milliseconds").textContent =
+    String(milliseconds).padStart(3, "0");
 
   document.getElementById("totalDays").textContent =
     totalDays.toLocaleString();
 }
 
+
+/*
+ * Run immediately
+ */
 updateCounter();
 
-// Update every 50 milliseconds
+
+/*
+ * Update 20 times per second
+ */
 setInterval(updateCounter, 50);
