@@ -163,49 +163,49 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+
 // ==========================================
-// SUPPORT BUTTON - ONE SUPPORT PER BROWSER
+// LOVE & SUPPORT - ONE COUNT PER BROWSER
 // ==========================================
 
-const supportBtn = document.getElementById("supportBtn");
-const supportCount = document.getElementById("supportCount");
+const loveButton = document.getElementById("loveButton");
+const loveCount = document.getElementById("loveCount");
 
-const supportKey = "imranKhanSupportGiven";
-const countKey = "imranKhanSupportCount";
+const loveGivenKey = "imranKhanLoveGiven";
+const loveCountKey = "imranKhanLoveCount";
 
 // Get saved count
-let supportTotal = parseInt(localStorage.getItem(countKey)) || 0;
+let totalLove = parseInt(localStorage.getItem(loveCountKey)) || 0;
 
-// Display saved count
-supportCount.textContent = supportTotal;
+// Show saved count
+loveCount.textContent = totalLove;
 
-// Check whether this browser has already supported
-if (localStorage.getItem(supportKey) === "true") {
-    supportBtn.disabled = true;
-    supportBtn.textContent = "Supported ✓";
+// Check if this browser has already supported
+if (localStorage.getItem(loveGivenKey) === "true") {
+    loveButton.disabled = true;
+    loveButton.setAttribute("aria-label", "You have already sent love and support");
 }
 
-// When Support is clicked
-supportBtn.addEventListener("click", function () {
+// Handle button click
+loveButton.addEventListener("click", function () {
 
-    // Prevent another support from this browser
-    if (localStorage.getItem(supportKey) === "true") {
+    // Stop if this browser already voted
+    if (localStorage.getItem(loveGivenKey) === "true") {
         return;
     }
 
-    // Increase count by exactly 1
-    supportTotal++;
+    // Add exactly one count
+    totalLove++;
 
-    // Save the new count
-    localStorage.setItem(countKey, supportTotal);
+    // Save the count
+    localStorage.setItem(loveCountKey, totalLove);
 
-    // Mark this browser as having supported
-    localStorage.setItem(supportKey, "true");
+    // Remember that this browser has supported
+    localStorage.setItem(loveGivenKey, "true");
 
-    // Update the displayed count
-    supportCount.textContent = supportTotal;
+    // Update number on screen
+    loveCount.textContent = totalLove;
 
-    // Disable the button
-    supportBtn.disabled = true;
-    supportBtn.textContent = "Supported ✓";
+    // Disable button
+    loveButton.disabled = true;
 });
