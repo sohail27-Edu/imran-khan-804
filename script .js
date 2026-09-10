@@ -1,1 +1,0 @@
-alert("SCRIPT.JS IS WORKING");
