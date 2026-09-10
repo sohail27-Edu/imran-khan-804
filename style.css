@@ -1,0 +1,282 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --green: #07552f;
+  --green-bright: #10a85a;
+  --green-dark: #031a10;
+  --red: #d7193f;
+  --red-bright: #ff3158;
+  --white: #f7faf8;
+  --muted: rgba(247,250,248,.72);
+  --glass: rgba(2, 19, 12, .58);
+  --border: rgba(255,255,255,.14);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  color: var(--white);
+  background: #020605;
+  font-family: Inter, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+.background {
+  position: fixed;
+  inset: -22px;
+  z-index: -3;
+  background:
+    url("images/imran-khan.png") center center / cover no-repeat;
+  filter: blur(3px);
+  transform: scale(1.04);
+}
+
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.86) 0%, rgba(0,0,0,.62) 42%, rgba(0,0,0,.72) 100%),
+    linear-gradient(180deg, rgba(0,20,11,.45), rgba(0,0,0,.78));
+}
+
+.vignette::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 70% 40%, rgba(10,116,64,.18), transparent 34%),
+    radial-gradient(circle at 50% 100%, rgba(215,25,63,.10), transparent 35%);
+}
+
+.page {
+  width: min(1120px, 92%);
+  min-height: 100vh;
+  margin: auto;
+  padding: 62px 0 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.hero { max-width: 850px; }
+
+.badge {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: 999px;
+  background: rgba(0,0,0,.32);
+  color: #bcebd0;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  backdrop-filter: blur(10px);
+}
+
+h1 {
+  margin-top: 17px;
+  font-size: clamp(3rem, 8vw, 6.7rem);
+  line-height: .95;
+  font-weight: 900;
+  letter-spacing: -.065em;
+  text-shadow: 0 12px 35px rgba(0,0,0,.6);
+}
+
+.headline {
+  margin-top: 10px;
+  color: #f4f6f4;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  font-weight: 600;
+}
+
+.since {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: .95rem;
+}
+
+.since strong { color: #fff; }
+
+.counter-card {
+  width: 100%;
+  max-width: 1050px;
+  margin-top: 34px;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  background: var(--glass);
+  box-shadow: 0 25px 80px rgba(0,0,0,.48), inset 0 1px 0 rgba(255,255,255,.07);
+  backdrop-filter: blur(16px);
+}
+
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+.time-box {
+  min-height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 7px;
+  border-radius: 18px;
+  background: rgba(255,255,255,.055);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.time-box span {
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(2rem, 4.5vw, 3.5rem);
+  line-height: 1;
+  font-weight: 800;
+  letter-spacing: -.05em;
+}
+
+.time-box small {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+}
+
+.seconds span { color: #71e0a0; }
+.milliseconds span { color: #ff607c; }
+
+.total {
+  margin-top: 15px;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 10px;
+  border-top: 1px solid rgba(255,255,255,.09);
+}
+
+.total-label {
+  color: var(--muted);
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .13em;
+  font-weight: 700;
+}
+
+.total strong {
+  color: #fff;
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.support { margin-top: 28px; }
+
+.love-button {
+  position: relative;
+  min-width: 265px;
+  padding: 14px 19px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid rgba(255,255,255,.18);
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, #a80d2d, var(--red), #9b0c2a);
+  box-shadow: 0 13px 35px rgba(215,25,63,.3), inset 0 1px rgba(255,255,255,.25);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 800;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.love-button:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 17px 45px rgba(215,25,63,.42), inset 0 1px rgba(255,255,255,.25);
+}
+
+.love-button:active { transform: scale(.96); }
+
+.heart {
+  font-size: 1.55rem;
+  line-height: 1;
+  animation: heartbeat 1.7s infinite;
+}
+
+.love-count {
+  min-width: 48px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: rgba(0,0,0,.2);
+  font-variant-numeric: tabular-nums;
+}
+
+.support-note {
+  margin-top: 10px;
+  color: rgba(255,255,255,.62);
+  font-size: .75rem;
+}
+
+footer {
+  margin-top: auto;
+  padding-top: 45px;
+  color: rgba(255,255,255,.48);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.dot { margin: 0 9px; color: var(--red-bright); }
+
+.heart-burst {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.floating-heart {
+  position: absolute;
+  bottom: 14%;
+  color: var(--red-bright);
+  font-size: 1.3rem;
+  animation: floatUp 1.5s ease-out forwards;
+  text-shadow: 0 0 15px rgba(255,49,88,.7);
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  10% { transform: scale(1.16); }
+  20% { transform: scale(1); }
+}
+
+@keyframes floatUp {
+  0% { opacity: 1; transform: translateY(0) scale(.8) rotate(0); }
+  100% { opacity: 0; transform: translateY(-180px) scale(1.5) rotate(18deg); }
+}
+
+@media (max-width: 850px) {
+  .counter-grid { grid-template-columns: repeat(4, 1fr); }
+  .page { padding-top: 42px; }
+  .background { background-position: 61% center; }
+}
+
+@media (max-width: 520px) {
+  .page { width: 94%; padding-top: 30px; }
+  .counter-card { padding: 12px; border-radius: 20px; margin-top: 25px; }
+  .counter-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .time-box { min-height: 95px; }
+  .time-box span { font-size: 2.25rem; }
+  .milliseconds { grid-column: span 2; }
+  .milliseconds span { font-size: 2rem; }
+  .total { flex-direction: column; gap: 2px; align-items: center; }
+  .love-button { min-width: 245px; }
+  footer { padding-top: 30px; }
+  }
+  
