@@ -160,9 +160,6 @@ document.addEventListener("DOMContentLoaded", function () {
       heart.remove();
     }, 1500);
 
-  });
-
-});
 
 // ==========================================
 // LOVE & SUPPORT - ONE COUNT PER BROWSER
