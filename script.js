@@ -163,3 +163,49 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+// ==========================================
+// SUPPORT BUTTON - ONE SUPPORT PER BROWSER
+// ==========================================
+
+const supportBtn = document.getElementById("supportBtn");
+const supportCount = document.getElementById("supportCount");
+
+const supportKey = "imranKhanSupportGiven";
+const countKey = "imranKhanSupportCount";
+
+// Get saved count
+let supportTotal = parseInt(localStorage.getItem(countKey)) || 0;
+
+// Display saved count
+supportCount.textContent = supportTotal;
+
+// Check whether this browser has already supported
+if (localStorage.getItem(supportKey) === "true") {
+    supportBtn.disabled = true;
+    supportBtn.textContent = "Supported ✓";
+}
+
+// When Support is clicked
+supportBtn.addEventListener("click", function () {
+
+    // Prevent another support from this browser
+    if (localStorage.getItem(supportKey) === "true") {
+        return;
+    }
+
+    // Increase count by exactly 1
+    supportTotal++;
+
+    // Save the new count
+    localStorage.setItem(countKey, supportTotal);
+
+    // Mark this browser as having supported
+    localStorage.setItem(supportKey, "true");
+
+    // Update the displayed count
+    supportCount.textContent = supportTotal;
+
+    // Disable the button
+    supportBtn.disabled = true;
+    supportBtn.textContent = "Supported ✓";
+});
