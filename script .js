@@ -3,77 +3,52 @@ const START = new Date("2023-08-05T12:59:00+05:00");
 function updateCounter() {
   const now = new Date();
 
-  let diff = now - START;
+  // Total elapsed milliseconds
+  let difference = now.getTime() - START.getTime();
 
-  if (diff < 0) {
-    return;
-  }
+  // Years
+  const years = Math.floor(difference / (365.2425 * 24 * 60 * 60 * 1000));
+  difference -= years * 365.2425 * 24 * 60 * 60 * 1000;
 
-  // Total days
-  const totalDays = Math.floor(diff / 86400000);
+  // Months
+  const months = Math.floor(difference / (30.436875 * 24 * 60 * 60 * 1000));
+  difference -= months * 30.436875 * 24 * 60 * 60 * 1000;
 
-  // Calculate calendar years
-  let years = now.getFullYear() - START.getFullYear();
-  let months = now.getMonth() - START.getMonth();
-  let days = now.getDate() - START.getDate();
+  // Days
+  const days = Math.floor(difference / (24 * 60 * 60 * 1000));
+  difference -= days * 24 * 60 * 60 * 1000;
 
-  if (days < 0) {
-    months--;
+  // Hours
+  const hours = Math.floor(difference / (60 * 60 * 1000));
+  difference -= hours * 60 * 60 * 1000;
 
-    const previousMonth = new Date(
-      now.getFullYear(),
-      now.getMonth(),
-      0
-    );
+  // Minutes
+  const minutes = Math.floor(difference / (60 * 1000));
+  difference -= minutes * 60 * 1000;
 
-    days += previousMonth.getDate();
-  }
+  // Seconds
+  const seconds = Math.floor(difference / 1000);
+  const milliseconds = difference % 1000;
 
-  if (months < 0) {
-    years--;
-    months += 12;
-  }
+  // Display
+  document.getElementById("years").textContent = years;
+  document.getElementById("months").textContent = String(months).padStart(2, "0");
+  document.getElementById("days").textContent = String(days).padStart(2, "0");
+  document.getElementById("hours").textContent = String(hours).padStart(2, "0");
+  document.getElementById("minutes").textContent = String(minutes).padStart(2, "0");
+  document.getElementById("seconds").textContent = String(seconds).padStart(2, "0");
+  document.getElementById("milliseconds").textContent = String(milliseconds).padStart(3, "0");
 
-  // Time remaining after years, months and days
-  const calendarStart = new Date(
-    START.getFullYear() + years,
-    START.getMonth() + months,
-    START.getDate(),
-    START.getHours(),
-    START.getMinutes(),
-    START.getSeconds(),
-    START.getMilliseconds()
+  // Total days since 5 August 2023
+  const totalDays = Math.floor(
+    (now.getTime() - START.getTime()) / (24 * 60 * 60 * 1000)
   );
 
-  let remainder = now - calendarStart;
-
-  const hours = Math.floor(remainder / 3600000);
-  remainder %= 3600000;
-
-  const minutes = Math.floor(remainder / 60000);
-  remainder %= 60000;
-
-  const seconds = Math.floor(remainder / 1000);
-  const milliseconds = remainder % 1000;
-
-  // Update display
-  document.getElementById("years").textContent = years;
-  document.getElementById("months").textContent =
-    String(months).padStart(2, "0");
-  document.getElementById("days").textContent =
-    String(days).padStart(2, "0");
-  document.getElementById("hours").textContent =
-    String(hours).padStart(2, "0");
-  document.getElementById("minutes").textContent =
-    String(minutes).padStart(2, "0");
-  document.getElementById("seconds").textContent =
-    String(seconds).padStart(2, "0");
-  document.getElementById("milliseconds").textContent =
-    String(milliseconds).padStart(3, "0");
   document.getElementById("totalDays").textContent =
     totalDays.toLocaleString();
 }
 
-// Start counter
 updateCounter();
+
+// Update every 50 milliseconds
 setInterval(updateCounter, 50);
