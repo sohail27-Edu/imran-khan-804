@@ -115,29 +115,34 @@ document.addEventListener("DOMContentLoaded", function () {
   // Update every 50 milliseconds
   setInterval(updateCounter, 50);
 
+/*
+ * VOTE BUTTON
+ */
 
+const voteButton = document.getElementById("voteButton");
+const voteMessage = document.getElementById("voteMessage");
 
-  /*
-   * LOVE & SUPPORT BUTTON
-   */
+const hasVoted = localStorage.getItem("imranKhanVoted");
 
-  const loveButton = document.getElementById("loveButton");
-  const loveCount = document.getElementById("loveCount");
-  const heartBurst = document.getElementById("heartBurst");
+if (hasVoted === "true") {
+  voteButton.disabled = true;
+  voteButton.querySelector(".love-text").textContent = "Vote Submitted";
+  voteMessage.textContent = "You have already voted.";
+}
 
-  let count = Number(localStorage.getItem("loveCount")) || 0;
+voteButton.addEventListener("click", function () {
 
-  loveCount.textContent = count.toLocaleString();
+  if (localStorage.getItem("imranKhanVoted") === "true") {
+    return;
+  }
 
+  localStorage.setItem("imranKhanVoted", "true");
 
-  loveButton.addEventListener("click", function () {
+  voteButton.disabled = true;
+  voteButton.querySelector(".love-text").textContent = "Vote Submitted";
+  voteMessage.textContent = "Your vote has been counted.";
+});
 
-    count++;
-
-    loveCount.textContent =
-      count.toLocaleString();
-
-    localStorage.setItem("loveCount", count);
 
 
     // Create floating heart
