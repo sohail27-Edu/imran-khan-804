@@ -176,23 +176,6 @@ loveButton.addEventListener("click", async function () {
     void heartBurst.offsetWidth;
     heartBurst.classList.add("show");
   }
-});
-
-loadSupportCount();
-
-  
-    // Heart animation
-    if (heartBurst) {
-      heartBurst.innerHTML = "♥";
-
-      heartBurst.classList.remove("show");
-
-      // Force animation restart
-      void heartBurst.offsetWidth;
-
-      heartBurst.classList.add("show");
-    }
-  });
-
+     });
 });
 
