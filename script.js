@@ -121,28 +121,66 @@ document.addEventListener("DOMContentLoaded", function () {
   // This makes milliseconds visibly move.
   setInterval(updateCounter, 10);
 
+const VISITOR_KEY = "imranKhanSupportVisitorId";
 
+let visitorId = localStorage.getItem(VISITOR_KEY);
 
-  // ==========================================
-  // LOVE & SUPPORT BUTTON
-  // ==========================================
+if (!visitorId) {
+  visitorId = crypto.randomUUID();
+  localStorage.setItem(VISITOR_KEY, visitorId);
+}
 
-  let count = Number(localStorage.getItem("loveSupportCount")) || 0;
+async function loadSupportCount() {
+  const { count, error } = await db
+    .from("supporters")
+    .select("*", { count: "exact", head: true });
 
-  loveCount.textContent = count;
+  if (error) {
+    console.error("Support count error:", error);
+    loveCount.textContent = "0";
+    return;
+  }
 
+  loveCount.textContent = count || 0;
+}
 
-  loveButton.addEventListener("click", function () {
+loveButton.addEventListener("click", async function () {
 
-    count++;
+  if (localStorage.getItem("loveSupportClicked")) {
+    return;
+  }
 
-    // Display new count
-    loveCount.textContent = count;
+  const { error } = await db
+    .from("supporters")
+    .insert({
+      visitor_id: visitorId
+    });
 
-    // Save count in browser
-    localStorage.setItem("loveSupportCount", count);
+  if (error) {
+    if (error.code === "23505") {
+      localStorage.setItem("loveSupportClicked", "true");
+      return;
+    }
 
+    console.error("Support button error:", error);
+    return;
+  }
 
+  localStorage.setItem("loveSupportClicked", "true");
+
+  loadSupportCount();
+
+  if (heartBurst) {
+    heartBurst.innerHTML = "♥";
+    heartBurst.classList.remove("show");
+    void heartBurst.offsetWidth;
+    heartBurst.classList.add("show");
+  }
+});
+
+loadSupportCount();
+
+  
     // Heart animation
     if (heartBurst) {
       heartBurst.innerHTML = "♥";
