@@ -1,3 +1,7 @@
+const SUPABASE_URL = "https://eaedcygrkcadsnpozezl.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_9MJEM4a1rlIUMbd9B4lAIA_K2Wnul6t";
+
+const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 document.addEventListener("DOMContentLoaded", function () {
 
   // Start date and time
