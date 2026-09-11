@@ -1,7 +1,3 @@
-const SUPABASE_URL = "https://eaedcygrkcadsnpozezl.supabase.co";
-const SUPABASE_KEY = "sb_publishable_9MJEM4a1rlIUMbd9B4lAIA_K2Wnul6t";
-
-const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 document.addEventListener("DOMContentLoaded", function () {
 
   // Start date and time
@@ -23,15 +19,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const heartBurst = document.getElementById("heartBurst");
 
 
-  // ==========================================
+  // =========================
   // LIVE TIME COUNTER
-  // ==========================================
+  // =========================
 
   function updateCounter() {
 
     const now = new Date();
 
-    // Calendar difference
     let years = now.getFullYear() - START.getFullYear();
     let months = now.getMonth() - START.getMonth();
     let days = now.getDate() - START.getDate();
@@ -40,32 +35,26 @@ document.addEventListener("DOMContentLoaded", function () {
     let seconds = now.getSeconds() - START.getSeconds();
     let milliseconds = now.getMilliseconds() - START.getMilliseconds();
 
-
-    // Fix milliseconds
     if (milliseconds < 0) {
       milliseconds += 1000;
       seconds--;
     }
 
-    // Fix seconds
     if (seconds < 0) {
       seconds += 60;
       minutes--;
     }
 
-    // Fix minutes
     if (minutes < 0) {
       minutes += 60;
       hours--;
     }
 
-    // Fix hours
     if (hours < 0) {
       hours += 24;
       days--;
     }
 
-    // Fix days
     if (days < 0) {
       months--;
 
@@ -78,16 +67,10 @@ document.addEventListener("DOMContentLoaded", function () {
       days += previousMonth.getDate();
     }
 
-    // Fix months
     if (months < 0) {
       months += 12;
       years--;
     }
-
-
-    // ==========================================
-    // DISPLAY CALENDAR TIME
-    // ==========================================
 
     yearsEl.textContent = years;
     monthsEl.textContent = months;
@@ -96,87 +79,61 @@ document.addEventListener("DOMContentLoaded", function () {
     minutesEl.textContent = minutes;
     secondsEl.textContent = seconds;
 
-    // Always show 3 digits: 001, 045, 999
-    millisecondsEl.textContent = String(milliseconds).padStart(3, "0");
+    millisecondsEl.textContent =
+      String(milliseconds).padStart(3, "0");
 
-
-    // ==========================================
-    // TOTAL DAYS
-    // ==========================================
-
+    // Total days
     const totalMilliseconds = now - START;
+
     const totalDays = Math.floor(
-      totalMilliseconds / (1000 * 60 * 60 * 24)
+      totalMilliseconds /
+      (1000 * 60 * 60 * 24)
     );
 
-    totalDaysEl.textContent = totalDays.toLocaleString();
+    totalDaysEl.textContent =
+      totalDays.toLocaleString();
   }
 
 
-  // Update immediately
   updateCounter();
 
-
-  // Update every 10 milliseconds
-  // This makes milliseconds visibly move.
   setInterval(updateCounter, 10);
 
-const VISITOR_KEY = "imranKhanSupportVisitorId";
 
-let visitorId = localStorage.getItem(VISITOR_KEY);
+  // =========================
+  // LOVE & SUPPORT
+  // =========================
 
-if (!visitorId) {
-  visitorId = crypto.randomUUID();
-  localStorage.setItem(VISITOR_KEY, visitorId);
-}
+  let count =
+    Number(localStorage.getItem("loveSupportCount")) || 0;
 
-async function loadSupportCount() {
-  const { count, error } = await db
-    .from("supporters")
-    .select("*", { count: "exact", head: true });
+  loveCount.textContent = count;
 
-  if (error) {
-    console.error("Support count error:", error);
-    loveCount.textContent = "0";
-    return;
-  }
 
-  loveCount.textContent = count || 0;
-}
+  loveButton.addEventListener("click", function () {
 
-loveButton.addEventListener("click", async function () {
+    count++;
 
-  if (localStorage.getItem("loveSupportClicked")) {
-    return;
-  }
-const { data, error } = await db
-  .from("supporters")
-  .select("id");
+    loveCount.textContent = count;
 
-if (error) {
-  console.error("Support count error:", error);
-  loveCount.textContent = "0";
-  return;
-}
+    localStorage.setItem(
+      "loveSupportCount",
+      count
+    );
 
-loveCount.textContent = data.length;
- 
+
+    // Heart animation
+    if (heartBurst) {
+
+      heartBurst.innerHTML = "♥";
+
+      heartBurst.classList.remove("show");
+
+      void heartBurst.offsetWidth;
+
+      heartBurst.classList.add("show");
     }
 
-    console.error("Support button error:", error);
-    return;
-  }
+  });
 
-  localStorage.setItem("loveSupportClicked", "true");
-
-  loadSupportCount();
-
-  if (heartBurst) {
-    heartBurst.innerHTML = "♥";
-    heartBurst.classList.remove("show");
-    void heartBurst.offsetWidth;
-    heartBurst.classList.add("show");
-  }
-     });
-  loadSupportCount();
-
+});
