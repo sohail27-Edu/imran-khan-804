@@ -149,17 +149,18 @@ loveButton.addEventListener("click", async function () {
   if (localStorage.getItem("loveSupportClicked")) {
     return;
   }
+const { data, error } = await db
+  .from("supporters")
+  .select("id");
 
-  const { error } = await db
-    .from("supporters")
-    .insert({
-      visitor_id: visitorId
-    });
+if (error) {
+  console.error("Support count error:", error);
+  loveCount.textContent = "0";
+  return;
+}
 
-  if (error) {
-    if (error.code === "23505") {
-      localStorage.setItem("loveSupportClicked", "true");
-      return;
+loveCount.textContent = data.length;
+ 
     }
 
     console.error("Support button error:", error);
