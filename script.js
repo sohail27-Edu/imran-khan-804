@@ -50,11 +50,12 @@ function updateCounter() {
     document.getElementById("milliseconds").textContent = String(milliseconds).padStart(3, "0");
     
     // Updates the overall total days counter (adjust the "total-days" ID if needed to match your HTML)
+    // Updates the overall total days counter 
+    // Make sure "total-days" matches the ID in your HTML exactly
     const totalDaysElement = document.getElementById("total-days");
     if (totalDaysElement) {
         totalDaysElement.textContent = totalDays;
-    }
-}
+        }
 
 setInterval(updateCounter, 10);
 updateCounter();
