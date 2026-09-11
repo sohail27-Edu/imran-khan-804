@@ -1,9 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-  // Start date and time
+  // ==========================================
+  // START DATE
+  // ==========================================
+
   const START = new Date("2023-08-05T12:59:00+05:00");
 
-  // Counter elements
+
+  // ==========================================
+  // COUNTER ELEMENTS
+  // ==========================================
+
   const yearsEl = document.getElementById("years");
   const monthsEl = document.getElementById("months");
   const daysEl = document.getElementById("days");
@@ -13,21 +20,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const millisecondsEl = document.getElementById("milliseconds");
   const totalDaysEl = document.getElementById("totalDays");
 
-  // Love & Support elements
-  const loveButton = document.getElementById("loveButton");
-  const loveCount = document.getElementById("loveCount");
-  const heartBurst = document.getElementById("heartBurst");
-
 
   // ==========================================
-  // LIVE TIME COUNTER
+  // LIVE COUNTER
   // ==========================================
 
   function updateCounter() {
 
     const now = new Date();
 
-    // Calendar difference
     let years = now.getFullYear() - START.getFullYear();
     let months = now.getMonth() - START.getMonth();
     let days = now.getDate() - START.getDate();
@@ -37,31 +38,31 @@ document.addEventListener("DOMContentLoaded", function () {
     let milliseconds = now.getMilliseconds() - START.getMilliseconds();
 
 
-    // Fix milliseconds
+    // Milliseconds
     if (milliseconds < 0) {
       milliseconds += 1000;
       seconds--;
     }
 
-    // Fix seconds
+    // Seconds
     if (seconds < 0) {
       seconds += 60;
       minutes--;
     }
 
-    // Fix minutes
+    // Minutes
     if (minutes < 0) {
       minutes += 60;
       hours--;
     }
 
-    // Fix hours
+    // Hours
     if (hours < 0) {
       hours += 24;
       days--;
     }
 
-    // Fix days
+    // Days
     if (days < 0) {
       months--;
 
@@ -74,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
       days += previousMonth.getDate();
     }
 
-    // Fix months
+    // Months
     if (months < 0) {
       months += 12;
       years--;
@@ -82,70 +83,84 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     // ==========================================
-    // DISPLAY CALENDAR TIME
+    // DISPLAY
     // ==========================================
 
     yearsEl.textContent = years;
     monthsEl.textContent = months;
     daysEl.textContent = days;
-    hoursEl.textContent = hours;
-    minutesEl.textContent = minutes;
-    secondsEl.textContent = seconds;
+    hoursEl.textContent = String(hours).padStart(2, "0");
+    minutesEl.textContent = String(minutes).padStart(2, "0");
+    secondsEl.textContent = String(seconds).padStart(2, "0");
 
-    // Always show 3 digits: 001, 045, 999
-    millisecondsEl.textContent = String(milliseconds).padStart(3, "0");
+    millisecondsEl.textContent =
+      String(milliseconds).padStart(3, "0");
 
 
     // ==========================================
     // TOTAL DAYS
     // ==========================================
 
-    const totalMilliseconds = now - START;
-    const totalDays = Math.floor(
-      totalMilliseconds / (1000 * 60 * 60 * 24)
-    );
+    const totalMilliseconds =
+      now.getTime() - START.getTime();
 
-    totalDaysEl.textContent = totalDays.toLocaleString();
+    const totalDays =
+      Math.floor(totalMilliseconds / 86400000);
+
+    totalDaysEl.textContent =
+      totalDays.toLocaleString();
   }
 
 
-  // Update immediately
+  // Start immediately
   updateCounter();
 
-
   // Update every 10 milliseconds
-  // This makes milliseconds visibly move.
   setInterval(updateCounter, 10);
 
 
-
   // ==========================================
-  // LOVE & SUPPORT BUTTON
+  // LOVE & SUPPORT
   // ==========================================
 
-  let count = Number(localStorage.getItem("loveSupportCount")) || 0;
+  const loveButton =
+    document.getElementById("loveButton");
+
+  const loveCount =
+    document.getElementById("loveCount");
+
+  const heartBurst =
+    document.getElementById("heartBurst");
+
+
+  // Get saved count from this browser
+  let count =
+    Number(localStorage.getItem("loveSupportCount")) || 0;
 
   loveCount.textContent = count;
 
 
+  // Button click
   loveButton.addEventListener("click", function () {
 
     count++;
 
-    // Display new count
     loveCount.textContent = count;
 
-    // Save count in browser
-    localStorage.setItem("loveSupportCount", count);
+    // Save count in this browser
+    localStorage.setItem(
+      "loveSupportCount",
+      count
+    );
 
 
     // Heart animation
     if (heartBurst) {
+
       heartBurst.innerHTML = "♥";
 
       heartBurst.classList.remove("show");
 
-      // Force animation restart
       void heartBurst.offsetWidth;
 
       heartBurst.classList.add("show");
