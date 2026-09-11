@@ -1,139 +1,100 @@
-document.addEventListener("DOMContentLoaded", function () {
+/*
+  Imran Khan Jail Time Counter
+  Start date: 5 August 2023.
+  The arrest was reported shortly after the 12:30 PM verdict.
+  Because an exact official arrest timestamp is not consistently published,
+  this counter uses 12:59:00 PM PKT as the working start timestamp.
+*/
 
-  // Start date and time
-  const START = new Date("2023-08-05T12:59:00+05:00");
+const START = new Date("2023-08-05T12:59:00+05:00");
 
-  // Counter elements
-  const yearsEl = document.getElementById("years");
-  const monthsEl = document.getElementById("months");
-  const daysEl = document.getElementById("days");
-  const hoursEl = document.getElementById("hours");
-  const minutesEl = document.getElementById("minutes");
-  const secondsEl = document.getElementById("seconds");
-  const millisecondsEl = document.getElementById("milliseconds");
-  const totalDaysEl = document.getElementById("totalDays");
+const $ = (id) => document.getElementById(id);
 
-  // Love & Support elements
-  const loveButton = document.getElementById("loveButton");
-  const loveCount = document.getElementById("loveCount");
-  const heartBurst = document.getElementById("heartBurst");
+function calendarDifference(start, end) {
+  let years = end.getFullYear() - start.getFullYear();
+  let months = end.getMonth() - start.getMonth();
+  let days = end.getDate() - start.getDate();
 
-
-  // =========================
-  // LIVE TIME COUNTER
-  // =========================
-
-  function updateCounter() {
-
-    const now = new Date();
-
-    let years = now.getFullYear() - START.getFullYear();
-    let months = now.getMonth() - START.getMonth();
-    let days = now.getDate() - START.getDate();
-    let hours = now.getHours() - START.getHours();
-    let minutes = now.getMinutes() - START.getMinutes();
-    let seconds = now.getSeconds() - START.getSeconds();
-    let milliseconds = now.getMilliseconds() - START.getMilliseconds();
-
-    if (milliseconds < 0) {
-      milliseconds += 1000;
-      seconds--;
-    }
-
-    if (seconds < 0) {
-      seconds += 60;
-      minutes--;
-    }
-
-    if (minutes < 0) {
-      minutes += 60;
-      hours--;
-    }
-
-    if (hours < 0) {
-      hours += 24;
-      days--;
-    }
-
-    if (days < 0) {
-      months--;
-
-      const previousMonth = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        0
-      );
-
-      days += previousMonth.getDate();
-    }
-
-    if (months < 0) {
-      months += 12;
-      years--;
-    }
-
-    yearsEl.textContent = years;
-    monthsEl.textContent = months;
-    daysEl.textContent = days;
-    hoursEl.textContent = hours;
-    minutesEl.textContent = minutes;
-    secondsEl.textContent = seconds;
-
-    millisecondsEl.textContent =
-      String(milliseconds).padStart(3, "0");
-
-    // Total days
-    const totalMilliseconds = now - START;
-
-    const totalDays = Math.floor(
-      totalMilliseconds /
-      (1000 * 60 * 60 * 24)
-    );
-
-    totalDaysEl.textContent =
-      totalDays.toLocaleString();
+  if (days < 0) {
+    months--;
+    const previousMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+    days += previousMonth.getDate();
   }
 
+  if (months < 0) {
+    years--;
+    months += 12;
+  }
 
-  updateCounter();
+  const anchor = new Date(
+    start.getFullYear() + years,
+    start.getMonth() + months,
+    start.getDate(),
+    start.getHours(),
+    start.getMinutes(),
+    start.getSeconds(),
+    start.getMilliseconds()
+  );
 
-  setInterval(updateCounter, 10);
+  let remainder = end - anchor;
 
+  const hour = 60 * 60 * 1000;
+  const minute = 60 * 1000;
+  const second = 1000;
 
-  // =========================
-  // LOVE & SUPPORT
-  // =========================
+  const hours = Math.floor(remainder / hour);
+  remainder %= hour;
 
-  let count =
-    Number(localStorage.getItem("loveSupportCount")) || 0;
+  const minutes = Math.floor(remainder / minute);
+  remainder %= minute;
 
-  loveCount.textContent = count;
+  const seconds = Math.floor(remainder / second);
+  const milliseconds = remainder % second;
 
+  return { years, months, days, hours, minutes, seconds, milliseconds };
+}
 
-  loveButton.addEventListener("click", function () {
+function updateCounter() {
+  const now = new Date();
+  const d = calendarDifference(START, now);
 
-    count++;
+  $("years").textContent = d.years;
+  $("months").textContent = String(d.months).padStart(2, "0");
+  $("days").textContent = String(d.days).padStart(2, "0");
+  $("hours").textContent = String(d.hours).padStart(2, "0");
+  $("minutes").textContent = String(d.minutes).padStart(2, "0");
+  $("seconds").textContent = String(d.seconds).padStart(2, "0");
+  $("milliseconds").textContent = String(d.milliseconds).padStart(3, "0");
 
-    loveCount.textContent = count;
+  $("totalDays").textContent =
+    Math.floor((now - START) / 86400000).toLocaleString();
+}
 
-    localStorage.setItem(
-      "loveSupportCount",
-      count
-    );
+function getStoredLoveCount() {
+  return Number(localStorage.getItem("imranKhanLoveCount") || 0);
+}
 
+let loveCount = getStoredLoveCount();
+$("loveCount").textContent = loveCount.toLocaleString();
 
-    // Heart animation
-    if (heartBurst) {
+$("loveButton").addEventListener("click", () => {
+  loveCount++;
+  localStorage.setItem("imranKhanLoveCount", loveCount);
+  $("loveCount").textContent = loveCount.toLocaleString();
 
-      heartBurst.innerHTML = "♥";
-
-      heartBurst.classList.remove("show");
-
-      void heartBurst.offsetWidth;
-
-      heartBurst.classList.add("show");
-    }
-
-  });
-
+  const burst = $("heartBurst");
+  for (let i = 0; i < 6; i++) {
+    const heart = document.createElement("span");
+    heart.className = "floating-heart";
+    heart.textContent = "♥";
+    heart.style.left = `${45 + Math.random() * 10}%`;
+    heart.style.animationDelay = `${Math.random() * .18}s`;
+    heart.style.fontSize = `${1 + Math.random() * 1.2}rem`;
+    burst.appendChild(heart);
+    setTimeout(() => heart.remove(), 1700);
+  }
 });
+
+updateCounter();
+setInterval(updateCounter, 47);
+    
