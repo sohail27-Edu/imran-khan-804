@@ -177,5 +177,5 @@ loveButton.addEventListener("click", async function () {
     heartBurst.classList.add("show");
   }
      });
-});
+  loadSupportCount();
 
