@@ -317,8 +317,8 @@ footer {
 
 .time-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .time-card {
@@ -352,14 +352,24 @@ footer {
 
 @media (max-width: 700px) {
   .time-stats {
-    grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
   }
-
   .time-passed {
     padding: 75px 18px;
   }
 
-  .time-card {
-    padding: 25px 10px;
-  }
+.time-card {
+  min-width: 0;
+  padding: 22px 6px;
 }
+
+.time-card span {
+  font-size: 24px;
+  white-space: nowrap;
+}
+
+.time-card small {
+  font-size: 9px;
+  letter-spacing: 2px;
+  }
