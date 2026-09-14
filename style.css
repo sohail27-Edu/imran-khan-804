@@ -281,4 +281,85 @@ footer {
   .love-button { min-width: 245px; }
   footer { padding-top: 30px; }
   }
-  
+  .time-passed {
+  padding: 100px 20px;
+  background: #111820;
+  color: #ffffff;
+  text-align: center;
+}
+
+.time-passed-content {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.section-label {
+  font-size: 13px;
+  letter-spacing: 4px;
+  font-weight: 600;
+  opacity: 0.7;
+  margin-bottom: 12px;
+}
+
+.time-passed h2 {
+  font-size: clamp(32px, 5vw, 52px);
+  margin: 0 0 15px;
+  font-weight: 700;
+}
+
+.time-description {
+  max-width: 600px;
+  margin: 0 auto 50px;
+  font-size: 16px;
+  line-height: 1.7;
+  opacity: 0.7;
+}
+
+.time-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+}
+
+.time-card {
+  padding: 30px 15px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(10px);
+  border-radius: 14px;
+}
+
+.time-card span {
+  display: block;
+  font-size: clamp(28px, 5vw, 48px);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.time-card small {
+  font-size: 11px;
+  letter-spacing: 3px;
+  opacity: 0.55;
+}
+
+.time-message {
+  margin-top: 50px;
+  font-size: 15px;
+  font-style: italic;
+  opacity: 0.65;
+}
+
+@media (max-width: 700px) {
+  .time-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .time-passed {
+    padding: 75px 18px;
+  }
+
+  .time-card {
+    padding: 25px 10px;
+  }
+}
