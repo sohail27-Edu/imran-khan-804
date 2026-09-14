@@ -120,3 +120,54 @@ heartBurst.classList.add("show");
 });
 
 });
+// ================================
+// SUPPORT MESSAGES
+// ================================
+
+const messageName = document.getElementById("messageName");
+const messageText = document.getElementById("messageText");
+const sendMessage = document.getElementById("sendMessage");
+const messagesList = document.getElementById("messagesList");
+
+let messages = JSON.parse(localStorage.getItem("supportMessages")) || [];
+
+function displayMessages() {
+  messagesList.innerHTML = "";
+
+  messages.slice().reverse().forEach(function(message) {
+    const box = document.createElement("div");
+    box.className = "message-box";
+
+    box.innerHTML = `
+      <strong>${message.name}</strong>
+      <p>${message.text}</p>
+    `;
+
+    messagesList.appendChild(box);
+  });
+}
+
+sendMessage.addEventListener("click", function() {
+
+  const name = messageName.value.trim();
+  const text = messageText.value.trim();
+
+  if (!name || !text) {
+    alert("Please enter your name and message.");
+    return;
+  }
+
+  messages.push({
+    name: name,
+    text: text
+  });
+
+  localStorage.setItem("supportMessages", JSON.stringify(messages));
+
+  messageName.value = "";
+  messageText.value = "";
+
+  displayMessages();
+});
+
+displayMessages();
