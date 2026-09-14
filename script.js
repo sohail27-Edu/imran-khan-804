@@ -8,14 +8,24 @@ const minutesEl=document.getElementById("minutes");
 const secondsEl=document.getElementById("seconds");
 const millisecondsEl=document.getElementById("milliseconds");
 const totalDaysEl=document.getElementById("totalDays");
+const totalHoursEl=document.getElementById("totalHours");
+const totalMinutesEl=document.getElementById("totalMinutes");
+const totalSecondsEl=document.getElementById("totalSeconds");  
 
 function updateCounter(){
 const now=new Date();
 const difference=now-START;
 if(difference<0)return;
 
-const totalDays=Math.floor(difference/86400000);
+const totalSeconds=Math.floor(difference/1000);
+const totalMinutes=Math.floor(totalSeconds/60);
+const totalHours=Math.floor(totalMinutes/60);
+const totalDays=Math.floor(totalHours/24);
+
 totalDaysEl.textContent=totalDays.toLocaleString();
+totalHoursEl.textContent=totalHours.toLocaleString();
+totalMinutesEl.textContent=totalMinutes.toLocaleString();
+totalSecondsEl.textContent=totalSeconds.toLocaleString();  
 
 let years=now.getFullYear()-START.getFullYear();
 let months=now.getMonth()-START.getMonth();
